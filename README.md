@@ -26,6 +26,9 @@ To make the pipeline completely automated two automated jobs will need to be cre
 
 A scheduled task can be created within google sheets. Make sure the timing of the two jobs is logical. For optimal turnaround time, the python script should run before the google sheet macro. 
 
+#### Resources for Pipeline 1:
+1. https://www.youtube.com/watch?v=o3AL7ASI_cA - this video guides you through how to make your google sheet columns connect to your google form drop down
+
 # Scraping Google Sheets into your Data Warehouse using Python (Pipeline 2)
 Using a python script make a connection to your google sheets using the google sheets API. The Pandas library can make a connection to any tab specified from the google sheet. The tab will be converted to a pandas dataframe once called. Once the dataframe is ready, the SQLalchemy library can be leveraged to store the data in your data warehouse.
 
