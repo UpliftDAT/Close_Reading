@@ -1,5 +1,6 @@
 # Close Reading
 High-level Summary
+
 Google Sheets and Google Forms can be used as a quick way to create a survey or tracker teams lacking the skill or time to make custom forms. The issue that becomes apparent is how to store this data or make sense of it. Google forms has also been a cause of frustration for teams for the inability to auto-update dropdowns.
 
  The Close Reading Tracker is a tool for the CIS (Curriculum Intervention Specialist) team used to record their observation of close reading time for English/Humanities teachers k-12 throughout the school year. The tool is deployed using Google Drive tools, as well as python and javascript. The creation of this tool allowed the Data Team at Uplfit to explore solutions and avenues around issues that surround Google Sheest and Google Forms. 
