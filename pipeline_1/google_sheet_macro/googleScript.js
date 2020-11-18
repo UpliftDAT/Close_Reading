@@ -1,0 +1,71 @@
+var ssID = "";
+var formID = "";
+
+var wsData = SpreadsheetApp.openById(ssID).getSheetByName("your_spreadsheet_name");
+var form = FormApp.openById(formID);
+
+
+// this function clears the A1 column before reorganizing it
+// this has been found to be a neccessary component 
+function clearColumnA1Notation(a1Notation) {
+    //a1Notation is the A1 notation of the  first element of the column
+
+    var sheet = SpreadsheetApp.getActiveSheet();
+    var firstCell = sheet.getRange("J1");
+    var numRows = sheet.getLastRow() - firstCell.getRow() + 1;
+    var range = sheet.getRange(firstCell.getRow(), firstCell.getColumn(), numRows);
+    range.clear();
+
+    var sheet = SpreadsheetApp.getActiveSheet();
+    var firstCell = sheet.getRange("K1");
+    var numRows = sheet.getLastRow() - firstCell.getRow() + 1;
+    var range = sheet.getRange(firstCell.getRow(), firstCell.getColumn(), numRows);
+    range.clear();
+
+    // an example of setting basic excel formulas using a macro
+    // if formulas are not written using macros they will be overwritten by incoming pandas dataframe
+    SpreadsheetApp.getActiveSheet().getRange("J1").setValue("name_these_your_google_form_questions");
+    SpreadsheetApp.getActiveSheet().getRange("J2").setFormula("=UNIQUE(H2:H)");
+    SpreadsheetApp.getActiveSheet().getRange("K1").setValue("name_these_your_google_form_questions ");
+    SpreadsheetApp.getActiveSheet().getRange("K2").setFormula("=SORT(I2:I)");
+
+}
+
+
+
+
+// below is the connection between google sheets and google forms
+// the code looks for where the column title matches the google form question
+// it then populates the question with the rows from the same column
+function main() {
+    var labels = wsData.getRange(1, 1, 1, wsData.getLastColumn()).getValues()[0];
+
+    labels.forEach(function(label, i) {
+        var options = wsData
+            .getRange(2, i + 1, wsData.getLastRow() - 1, 1)
+            .getValues()
+            .map(function(o) { return o[0] })
+            .filter(function(o) { return o !== "" });
+
+        updateDropDownUsingTitle(label, options);
+    });
+}
+
+
+function updateDropDownUsingTitle(title, values) {
+    var items = form.getItems();
+    var titles = items.map(function(item) {
+        return item.getTitle();
+    });
+    var pos = titles.indexOf(title);
+    if (pos !== -1) {
+        var item = items[pos];
+        var itemID = item.getId();
+        updateDropdown(itemID, values);
+    }
+}
+
+function updateDropdown(id, values) {
+    var item = form.getItemById(id);
+    item.asListItem().setChoiceValues(values);
+}
